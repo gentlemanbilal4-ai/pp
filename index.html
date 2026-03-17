@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PayDemo – Log In</title>
+  <!-- Load a heavy geometric sans-serif to match PayPal's wordmark weight -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@900&display=swap" rel="stylesheet" />
   <style>
 
     /* ─────────────────────────────────────────
@@ -13,10 +17,8 @@
 
     :root {
       --blue:       #1565c0;
-      --blue-dark:  #003087;
-      --blue-light: #009cde;
+      --blue-hover: #0d47a1;
       --blue-btn:   #1976d2;
-      --blue-hover: #1356a8;
       --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     }
 
@@ -24,26 +26,20 @@
       height: 100%;
       font-family: var(--font);
       -webkit-font-smoothing: antialiased;
+      background: #fff;
     }
-
-    a { text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    button { cursor: pointer; font-family: var(--font); }
-
 
     /* ═══════════════════════════════════════
        MOBILE  (default — < 768px)
     ═══════════════════════════════════════ */
-
     body {
-      background: #fff;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
 
-    /* ── Mobile: main content grows ── */
+    .desktop-wrapper { display: none; }
+
     .mobile-main {
       flex: 1;
       display: flex;
@@ -51,23 +47,21 @@
       padding: 0 24px;
     }
 
-    /* Hide desktop wrapper on mobile */
-    .desktop-wrapper { display: none; }
-
-    /* ── Mobile brand ── */
+    /* ── Mobile Brand ── */
     .mob-brand {
       text-align: center;
       padding: 52px 0 44px;
     }
     .mob-brand-text {
-      font-size: 2.75rem;
+      font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 3rem;
       font-weight: 900;
       color: #111;
-      letter-spacing: -1px;
+      letter-spacing: -2px;
       line-height: 1;
     }
 
-    /* ── Mobile inputs ── */
+    /* ── Mobile Inputs ── */
     .mob-field { margin-bottom: 14px; }
     .mob-field input {
       width: 100%;
@@ -94,168 +88,134 @@
     }
     .mob-field.invalid .err { display: block; }
 
-    /* ── Forgot password ── */
+    /* ── Forgot ── */
     .mob-forgot {
       display: block;
       font-size: 1rem;
       font-weight: 700;
       color: var(--blue);
       margin: 6px 0 22px 2px;
+      text-decoration: none;
     }
     .mob-forgot:hover { text-decoration: underline; }
 
-    /* ── Log In btn ── */
+    /* ── Log In ── */
     .mob-btn-login {
-      display: block;
-      width: 100%;
-      height: 58px;
-      background: #1565c0;
-      color: #fff;
-      border: none;
-      border-radius: 30px;
-      font-size: 1.06rem;
-      font-weight: 700;
-      letter-spacing: .01em;
-      transition: background .15s;
+      display: block; width: 100%; height: 58px;
+      background: #1565c0; color: #fff;
+      border: none; border-radius: 30px;
+      font-size: 1.06rem; font-weight: 700; font-family: var(--font);
+      cursor: pointer; transition: background .15s;
     }
     .mob-btn-login:hover  { background: var(--blue-hover); }
     .mob-btn-login:active { opacity: .9; }
 
-    /* ── Divider "or" ── */
+    /* ── Divider ── */
     .mob-divider {
-      display: flex;
-      align-items: center;
-      gap: 14px;
+      display: flex; align-items: center; gap: 14px;
       margin: 26px 0 24px;
-      color: #999;
-      font-size: .9rem;
+      color: #999; font-size: .9rem;
     }
-    .mob-divider::before,
-    .mob-divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: #d0d0d0;
+    .mob-divider::before, .mob-divider::after {
+      content: ''; flex: 1; height: 1px; background: #d0d0d0;
     }
 
-    /* ── Sign Up btn (outline pill) ── */
+    /* ── Sign Up ── */
     .mob-btn-signup {
-      display: block;
-      width: 100%;
-      height: 58px;
-      background: #fff;
-      color: #111;
-      border: 2px solid #111;
-      border-radius: 30px;
-      font-size: 1.06rem;
-      font-weight: 700;
-      transition: background .15s;
+      display: block; width: 100%; height: 58px;
+      background: #fff; color: #111;
+      border: 2px solid #111; border-radius: 30px;
+      font-size: 1.06rem; font-weight: 700; font-family: var(--font);
+      cursor: pointer; transition: background .15s;
     }
     .mob-btn-signup:hover  { background: #f5f5f5; }
-    .mob-btn-signup:active { opacity: .9; }
 
     /* ── Demo notice ── */
     .demo-notice {
-      display: none;
-      margin: 16px 0 0;
+      display: none; margin: 16px 0 0;
       padding: 11px 14px;
-      background: #e3f2fd;
-      border: 1px solid #90caf9;
-      border-radius: 5px;
-      font-size: .83rem;
-      color: #0d47a1;
+      background: #e3f2fd; border: 1px solid #90caf9;
+      border-radius: 5px; font-size: .83rem; color: #0d47a1;
       text-align: center;
     }
     .demo-notice.show { display: block; }
 
     /* ── Language row ── */
     .mob-lang {
-      display: flex;
-      align-items: center;
+      display: flex; align-items: center;
       justify-content: center;
-      gap: 9px;
-      margin: 52px 0 0;
+      gap: 10px; margin: 52px 0 0;
       flex-wrap: wrap;
     }
 
-    /* CSS-only US flag */
+    /* ── Proper US Flag (SVG-based via inline element) ── */
     .flag-us {
-      width: 30px;
-      height: 20px;
-      border-radius: 2px;
+      width: 42px; height: 30px;
+      border-radius: 6px;
       overflow: hidden;
-      position: relative;
       display: inline-block;
-      border: 1px solid #ccc;
+      position: relative;
+      border: 2px solid #ccc;
       flex-shrink: 0;
+      background: #fff;
     }
     .flag-stripes {
-      position: absolute;
-      inset: 0;
+      position: absolute; inset: 0;
       background: repeating-linear-gradient(
         180deg,
-        #B22234 0%,   #B22234 7.69%,
-        #fff    7.69%, #fff   15.38%,
+        #B22234 0%,    #B22234 7.69%,
+        #fff    7.69%, #fff    15.38%,
         #B22234 15.38%,#B22234 23.07%,
-        #fff    23.07%,#fff   30.77%,
+        #fff    23.07%,#fff    30.77%,
         #B22234 30.77%,#B22234 38.46%,
-        #fff    38.46%,#fff   46.15%,
+        #fff    38.46%,#fff    46.15%,
         #B22234 46.15%,#B22234 53.84%,
-        #fff    53.84%,#fff   61.53%,
+        #fff    53.84%,#fff    61.53%,
         #B22234 61.53%,#B22234 69.23%,
-        #fff    69.23%,#fff   76.92%,
+        #fff    69.23%,#fff    76.92%,
         #B22234 76.92%,#B22234 84.61%,
-        #fff    84.61%,#fff   92.30%,
+        #fff    84.61%,#fff    92.30%,
         #B22234 92.30%,#B22234 100%
       );
     }
     .flag-canton {
-      position: absolute;
-      top: 0; left: 0;
-      width: 42%;
-      height: 52%;
+      position: absolute; top: 0; left: 0;
+      width: 44%; height: 53.8%;
       background: #3C3B6E;
+      border-radius: 0 0 2px 0;
     }
 
-    .mob-chevron { font-size: .62rem; color: #555; }
+    .mob-chevron { font-size: .7rem; color: #444; margin-left: -4px; }
 
     .mob-langs {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0;
+      display: flex; align-items: center;
+      flex-wrap: wrap; gap: 0;
       justify-content: center;
     }
     .mob-langs a {
-      font-size: .9rem;
-      color: #333;
-      padding: 0 7px;
-      text-decoration: none;
+      font-size: .9rem; color: #333;
+      padding: 0 7px; text-decoration: none;
+      transition: color .12s;
     }
     .mob-langs a.active { font-weight: 700; color: #111; padding-left: 0; }
-    .mob-langs a:hover { text-decoration: underline; }
+    .mob-langs a:hover  { color: var(--blue); }
     .mob-langs .sep { color: #bbb; font-size: .85rem; }
 
-    /* ── Mobile footer ── */
+    /* ── Mobile Footer ── */
     .mob-footer {
-      padding: 30px 16px 28px;
+      padding: 28px 16px 24px;
       text-align: center;
     }
-    .footer-links {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 4px 16px;
+    .footer-items {
+      display: flex; flex-wrap: wrap;
+      justify-content: center; gap: 4px 16px;
     }
-    .footer-links a {
-      font-size: .8rem;
-      color: #666;
+    .footer-items span {
+      font-size: .8rem; color: #666;
+      cursor: default;
     }
-    .footer-links a:hover { color: var(--blue); text-decoration: underline; }
     .footer-copy {
-      margin-top: 10px;
-      font-size: .68rem;
-      color: #bbb;
+      margin-top: 10px; font-size: .68rem; color: #bbb;
     }
 
 
@@ -264,15 +224,9 @@
     ═══════════════════════════════════════ */
     @media (min-width: 768px) {
 
-      body {
-        background: #fff;
-        display: block;          /* reset flex */
-        min-height: 100vh;
-        position: relative;
-      }
+      body { display: block; background: #fff; }
 
-      /* Hide mobile, show desktop */
-      .mobile-main  { display: none; }
+      .mobile-main { display: none; }
       .mob-footer   { display: none; }
 
       .desktop-wrapper {
@@ -280,189 +234,142 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: calc(100vh - 52px); /* leave room for fixed footer */
+        min-height: calc(100vh - 52px);
       }
 
-      /* ── Desktop brand ── */
+      /* Desktop brand */
       .desk-brand {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 22px;
+        display: flex; align-items: center;
+        gap: 8px; margin-bottom: 22px;
+        justify-content: center;
       }
       .desk-pp-icon svg { display: block; width: 30px; height: 30px; }
       .desk-pp-word {
-        font-size: 1.5rem;
-        font-weight: 700;
-        letter-spacing: -.2px;
+        font-size: 1.5rem; font-weight: 700; letter-spacing: -.2px;
       }
       .pp-dark  { color: #003087; }
       .pp-light { color: #009cde; }
 
-      /* ── Desktop form ── */
+      /* Desktop form */
       .desk-form { width: 372px; }
 
       .desk-field { margin-bottom: 0; }
       .desk-field input {
-        width: 100%;
-        height: 44px;
+        width: 100%; height: 44px;
         padding: 0 12px;
         border: 1px solid #c0c0c0;
-        border-radius: 0;
-        font-size: .93rem;
-        font-family: var(--font);
-        color: #333;
-        background: #fff;
-        outline: none;
+        font-size: .93rem; font-family: var(--font);
+        color: #333; background: #fff; outline: none;
         transition: border-color .15s, box-shadow .15s;
-        position: relative;
-        z-index: 1;
+        position: relative; z-index: 1;
       }
-      /* Stack inputs: top gets top-radius, bottom gets bottom-radius */
       .desk-field:first-child input {
-        border-radius: 4px 4px 0 0;
-        border-bottom: none;
+        border-radius: 4px 4px 0 0; border-bottom: none;
       }
       .desk-field:nth-child(2) input {
         border-radius: 0 0 4px 4px;
       }
-      .desk-field input::placeholder { color: #9a9a9a; font-size: .93rem; }
+      .desk-field input::placeholder { color: #9a9a9a; }
       .desk-field input:focus {
         border-color: var(--blue);
-        box-shadow: 0 0 0 1px var(--blue);
-        z-index: 2;
+        box-shadow: 0 0 0 1px var(--blue); z-index: 2;
       }
       .desk-field.invalid input { border-color: #d32f2f; }
       .desk-field .err {
-        display: none;
-        font-size: .76rem;
-        color: #d32f2f;
-        margin-top: 4px;
-        padding-left: 2px;
+        display: none; font-size: .76rem; color: #d32f2f;
+        margin-top: 4px; padding-left: 2px;
       }
       .desk-field.invalid .err { display: block; }
 
-      /* ── Desktop Log In ── */
       .desk-btn-login {
-        display: block;
-        width: 100%;
-        height: 44px;
+        display: block; width: 100%; height: 44px;
         margin-top: 16px;
-        background: #1976d2;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        font-size: .95rem;
-        font-weight: 700;
-        letter-spacing: .02em;
-        transition: background .15s;
+        background: #1976d2; color: #fff;
+        border: none; border-radius: 4px;
+        font-size: .95rem; font-weight: 700; font-family: var(--font);
+        cursor: pointer; transition: background .15s;
       }
       .desk-btn-login:hover  { background: #1565c0; }
       .desk-btn-login:active { background: #0d47a1; }
 
-      /* ── "Having trouble" ── */
       .desk-trouble {
-        display: block;
-        text-align: center;
-        font-size: .88rem;
-        color: var(--blue);
-        margin: 12px 0 0;
+        display: block; text-align: center;
+        font-size: .88rem; color: var(--blue);
+        margin: 12px 0 0; text-decoration: none;
       }
       .desk-trouble:hover { text-decoration: underline; }
 
-      /* ── Desktop divider (line only) ── */
-      .desk-divider {
-        height: 1px;
-        background: #e0e0e0;
-        margin: 18px 0;
-      }
+      .desk-divider { height: 1px; background: #e0e0e0; margin: 18px 0; }
 
-      /* ── Desktop Sign Up ── */
       .desk-btn-signup {
-        display: block;
-        width: 100%;
-        height: 44px;
-        background: #e8eaf0;
-        color: #2d3748;
-        border: none;
-        border-radius: 4px;
-        font-size: .93rem;
-        font-weight: 700;
-        transition: background .15s;
+        display: block; width: 100%; height: 44px;
+        background: #e8eaf0; color: #2d3748;
+        border: none; border-radius: 4px;
+        font-size: .93rem; font-weight: 700; font-family: var(--font);
+        cursor: pointer; transition: background .15s;
       }
-      .desk-btn-signup:hover  { background: #dde0ea; }
-      .desk-btn-signup:active { opacity: .9; }
+      .desk-btn-signup:hover { background: #dde0ea; }
 
-      /* ── Desktop demo notice ── */
       .desk-demo {
-        display: none;
-        margin: 14px 0 0;
+        display: none; margin: 14px 0 0;
         padding: 10px 14px;
-        background: #e3f2fd;
-        border: 1px solid #90caf9;
-        border-radius: 4px;
-        font-size: .82rem;
-        color: #0d47a1;
+        background: #e3f2fd; border: 1px solid #90caf9;
+        border-radius: 4px; font-size: .82rem; color: #0d47a1;
         text-align: center;
       }
       .desk-demo.show { display: block; }
 
-      /* ── Desktop footer (fixed, gray strip) ── */
+      /* Fixed footer */
       .desk-footer {
-        position: fixed;
-        bottom: 0; left: 0;
-        width: 100%;
-        height: 52px;
+        position: fixed; bottom: 0; left: 0;
+        width: 100%; height: 52px;
         background: #eef0f4;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 22px;
+        display: flex; align-items: center;
+        justify-content: center; gap: 22px;
       }
-      .desk-footer a {
-        font-size: .78rem;
-        color: #555;
-        text-decoration: none;
+      .desk-footer span {
+        font-size: .78rem; color: #555; cursor: default;
       }
-      .desk-footer a:hover { color: var(--blue); text-decoration: underline; }
     }
 
   </style>
 </head>
 <body>
 
-  <!-- ════════════════════════════════════════
+  <!-- ════════════════════════════════════
        MOBILE LAYOUT
-  ════════════════════════════════════════ -->
+  ════════════════════════════════════ -->
   <div class="mobile-main">
 
     <!-- Brand -->
     <div class="mob-brand">
-      <div class="mob-brand-text">PayPal</div>
+      <div class="mob-brand-text" id="mob-brand-txt">PayPal</div>
     </div>
 
     <!-- Form -->
     <form id="mobForm" novalidate>
 
       <div class="mob-field" id="mEmailField">
-        <input type="email" id="mEmail" placeholder="Email or mobile number"
-               autocomplete="username" aria-label="Email or mobile number" />
-        <div class="err">Please enter a valid email address.</div>
+        <input type="email" id="mEmail"
+               placeholder="Email or mobile number"
+               autocomplete="username" />
+        <div class="err" id="mEmailErr">Please enter a valid email address.</div>
       </div>
 
       <div class="mob-field" id="mPassField">
-        <input type="password" id="mPass" placeholder="Password"
-               autocomplete="current-password" aria-label="Password" />
+        <input type="password" id="mPass"
+               placeholder="Password"
+               autocomplete="current-password" />
         <div class="err">Please enter your password.</div>
       </div>
 
-      <a href="#" class="mob-forgot">Forgot password?</a>
+      <a href="#" class="mob-forgot" id="mob-forgot-txt">Forgot password?</a>
 
-      <button type="submit" class="mob-btn-login">Log In</button>
+      <button type="submit" class="mob-btn-login" id="mob-login-txt">Log In</button>
 
-      <div class="mob-divider">or</div>
+      <div class="mob-divider" id="mob-or-txt">or</div>
 
-      <button type="button" class="mob-btn-signup"
+      <button type="button" class="mob-btn-signup" id="mob-signup-txt"
               onclick="alert('Sign-up is not part of this demo.')">Sign Up</button>
 
       <div class="demo-notice" id="mobNotice" role="alert">
@@ -477,39 +384,38 @@
         <span class="flag-stripes"></span>
         <span class="flag-canton"></span>
       </span>
-      <span class="mob-chevron">▾</span>
-      <div class="mob-langs">
-        <a href="#" class="active">English</a>
+      <span class="mob-chevron">▼</span>
+      <div class="mob-langs" id="langList">
+        <a href="#" class="active" data-lang="en">English</a>
         <span class="sep">|</span>
-        <a href="#">Français</a>
+        <a href="#" data-lang="fr">Français</a>
         <span class="sep">|</span>
-        <a href="#">Español</a>
+        <a href="#" data-lang="es">Español</a>
         <span class="sep">|</span>
-        <a href="#">中文</a>
+        <a href="#" data-lang="zh">中文</a>
       </div>
     </div>
 
-  </div><!-- /mobile-main -->
+  </div>
 
   <!-- Mobile footer -->
   <footer class="mob-footer">
-    <nav class="footer-links" aria-label="Footer">
-      <a href="#">Contact Us</a>
-      <a href="#">Privacy</a>
-      <a href="#">Legal</a>
-      <a href="#">Policy Updates</a>
-      <a href="#">Worldwide</a>
-    </nav>
+    <div class="footer-items">
+      <span>Contact Us</span>
+      <span>Privacy</span>
+      <span>Legal</span>
+      <span>Policy Updates</span>
+      <span>Worldwide</span>
+    </div>
     <p class="footer-copy">© 2024 PayDemo Inc. — Training purposes only. Not affiliated with PayPal.</p>
   </footer>
 
 
-  <!-- ════════════════════════════════════════
+  <!-- ════════════════════════════════════
        DESKTOP LAYOUT
-  ════════════════════════════════════════ -->
+  ════════════════════════════════════ -->
   <div class="desktop-wrapper">
 
-    <!-- Brand -->
     <div class="desk-brand">
       <div class="desk-pp-icon">
         <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
@@ -523,18 +429,15 @@
       </div>
     </div>
 
-    <!-- Form -->
     <form id="deskForm" class="desk-form" novalidate>
 
       <div class="desk-field" id="dEmailField">
-        <input type="email" id="dEmail" placeholder="Email"
-               autocomplete="username" aria-label="Email" />
+        <input type="email" id="dEmail" placeholder="Email" autocomplete="username" />
         <div class="err">Please enter a valid email.</div>
       </div>
 
       <div class="desk-field" id="dPassField">
-        <input type="password" id="dPass" placeholder="Password"
-               autocomplete="current-password" aria-label="Password" />
+        <input type="password" id="dPass" placeholder="Password" autocomplete="current-password" />
         <div class="err">Please enter your password.</div>
       </div>
 
@@ -552,21 +455,84 @@
       </div>
 
     </form>
-
-  </div><!-- /desktop-wrapper -->
+  </div>
 
   <!-- Desktop footer -->
-  <footer class="desk-footer" aria-label="Footer">
-    <a href="#">Contact Us</a>
-    <a href="#">Privacy</a>
-    <a href="#">Legal</a>
-    <a href="#">Policy Updates</a>
-    <a href="#">Worldwide</a>
+  <footer class="desk-footer">
+    <span>Contact Us</span>
+    <span>Privacy</span>
+    <span>Legal</span>
+    <span>Policy Updates</span>
+    <span>Worldwide</span>
   </footer>
 
 
   <script>
-    /* ── Helpers ──────────────────────────────────────── */
+    /* ── Language translations ────────────────────────────── */
+    const translations = {
+      en: {
+        brand:    'PayPal',
+        email:    'Email or mobile number',
+        pass:     'Password',
+        forgot:   'Forgot password?',
+        login:    'Log In',
+        or:       'or',
+        signup:   'Sign Up',
+      },
+      fr: {
+        brand:    'PayPal',
+        email:    'E-mail ou numéro de mobile',
+        pass:     'Mot de passe',
+        forgot:   'Mot de passe oublié ?',
+        login:    'Se connecter',
+        or:       'ou',
+        signup:   "S'inscrire",
+      },
+      es: {
+        brand:    'PayPal',
+        email:    'Correo electrónico o número de móvil',
+        pass:     'Contraseña',
+        forgot:   '¿Olvidaste tu contraseña?',
+        login:    'Iniciar sesión',
+        or:       'o',
+        signup:   'Registrarse',
+      },
+      zh: {
+        brand:    'PayPal',
+        email:    '电子邮件或手机号码',
+        pass:     '密码',
+        forgot:   '忘记密码？',
+        login:    '登录',
+        or:       '或',
+        signup:   '注册',
+      }
+    };
+
+    function applyLang(lang) {
+      const t = translations[lang] || translations.en;
+      /* Mobile */
+      document.getElementById('mob-brand-txt').textContent          = t.brand;
+      document.getElementById('mEmail').placeholder                 = t.email;
+      document.getElementById('mPass').placeholder                  = t.pass;
+      document.getElementById('mob-forgot-txt').textContent         = t.forgot;
+      document.getElementById('mob-login-txt').textContent          = t.login;
+      document.getElementById('mob-or-txt').textContent             = t.or;
+      document.getElementById('mob-signup-txt').textContent         = t.signup;
+      /* Active state on lang links */
+      document.querySelectorAll('#langList a').forEach(a => {
+        a.classList.toggle('active', a.dataset.lang === lang);
+      });
+    }
+
+    /* Language link clicks */
+    document.querySelectorAll('#langList a').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        applyLang(a.dataset.lang);
+      });
+    });
+
+    /* ── Helpers ──────────────────────────────────────────── */
     const isEmail = v =>
       /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || /^\+?\d{7,15}$/.test(v.replace(/\s/g,''));
 
@@ -576,7 +542,7 @@
       return ok;
     }
 
-    /* ── Mobile form ──────────────────────────────────── */
+    /* ── Mobile form ──────────────────────────────────────── */
     const mEmail = document.getElementById('mEmail');
     const mPass  = document.getElementById('mPass');
     const mEF    = document.getElementById('mEmailField');
@@ -595,7 +561,7 @@
       setTimeout(() => mNote.classList.remove('show'), 6000);
     });
 
-    /* ── Desktop form ─────────────────────────────────── */
+    /* ── Desktop form ─────────────────────────────────────── */
     const dEmail = document.getElementById('dEmail');
     const dPass  = document.getElementById('dPass');
     const dEF    = document.getElementById('dEmailField');
