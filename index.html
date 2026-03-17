@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>paypal.com/signin</title>
-  <!-- Load a heavy geometric sans-serif to match PayPal's wordmark weight -->
+  <title>PayDemo – Log In</title>
+  <!-- Barlow Black 900 — closest free match to PayPal's heavy wordmark -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@700;800;900&family=Nunito+Sans:wght@900&display=swap" rel="stylesheet" />
   <style>
 
     /* ─────────────────────────────────────────
@@ -54,12 +54,13 @@
       padding: 52px 0 44px;
     }
     .mob-brand-text {
-      font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-size: 3rem;
-      font-weight: 900;
-      color: #111;
-      letter-spacing: -2px;
+      font-family: 'Barlow', 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 3.2rem;
+      font-weight: 800;
+      color: #111111;
+      letter-spacing: 0.5px;
       line-height: 1;
+      -webkit-font-smoothing: antialiased;
     }
 
     /* ── Mobile Inputs ── */
@@ -211,10 +212,11 @@
       display: flex; flex-wrap: wrap;
       justify-content: center; gap: 4px 16px;
     }
-    .footer-items span {
+    .footer-items a {
       font-size: .8rem; color: #666;
-      cursor: default;
+      text-decoration: none; cursor: pointer;
     }
+    .footer-items a:hover { color: #1565c0; text-decoration: underline; }
     .footer-copy {
       margin-top: 10px; font-size: .68rem; color: #bbb;
     }
@@ -404,13 +406,12 @@
   <!-- Mobile footer -->
   <footer class="mob-footer">
     <div class="footer-items">
-      <span>Contact Us</span>
-      <span>Privacy</span>
-      <span>Legal</span>
-      <span>Policy Updates</span>
-      <span>Worldwide</span>
+      <a href="https://www.paypal.com/us/cshelp/contact-us" target="_blank" rel="noopener">Contact Us</a>
+      <a href="https://www.paypal.com/us/legalhub/paypal/privacy-full" target="_blank" rel="noopener">Privacy</a>
+      <a href="https://www.paypal.com/us/legalhub/paypal/home" target="_blank" rel="noopener">Legal</a>
+      <a href="https://www.paypal.com/us/legalhub/paypal/privacy-full" target="_blank" rel="noopener">Policy Updates</a>
+      <a href="https://www.paypal.com/us/webapps/mpp/country-worldwide" target="_blank" rel="noopener">Worldwide</a>
     </div>
-    <p class="footer-copy">© 2024 PayDemo Inc. — Training purposes only. Not affiliated with PayPal.</p>
   </footer>
 
 
@@ -491,11 +492,11 @@
 
   <!-- Desktop footer -->
   <footer class="desk-footer">
-    <span>Contact Us</span>
-    <span>Privacy</span>
-    <span>Legal</span>
-    <span>Policy Updates</span>
-    <span>Worldwide</span>
+    <a href="https://www.paypal.com/us/cshelp/contact-us" target="_blank" rel="noopener">Contact Us</a>
+    <a href="https://www.paypal.com/us/legalhub/paypal/privacy-full" target="_blank" rel="noopener">Privacy</a>
+    <a href="https://www.paypal.com/us/legalhub/paypal/home" target="_blank" rel="noopener">Legal</a>
+    <a href="https://www.paypal.com/us/legalhub/paypal/privacy-full" target="_blank" rel="noopener">Policy Updates</a>
+    <a href="https://www.paypal.com/us/webapps/mpp/country-worldwide" target="_blank" rel="noopener">Worldwide</a>
   </footer>
 
 
