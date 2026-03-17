@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PayDemo – Log In</title>
+  <style>
+
+    /* ─────────────────────────────────────────
+       RESET
+    ───────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:       #1565c0;
+      --blue-dark:  #003087;
+      --blue-light: #009cde;
+      --blue-btn:   #1976d2;
+      --blue-hover: #1356a8;
+      --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    button { cursor: pointer; font-family: var(--font); }
+
+
+    /* ═══════════════════════════════════════
+       MOBILE  (default — < 768px)
+    ═══════════════════════════════════════ */
+
+    body {
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ── Mobile: main content grows ── */
+    .mobile-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 0 24px;
+    }
+
+    /* Hide desktop wrapper on mobile */
+    .desktop-wrapper { display: none; }
+
+    /* ── Mobile brand ── */
+    .mob-brand {
+      text-align: center;
+      padding: 52px 0 44px;
+    }
+    .mob-brand-text {
+      font-size: 2.75rem;
+      font-weight: 900;
+      color: #111;
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    /* ── Mobile inputs ── */
+    .mob-field { margin-bottom: 14px; }
+    .mob-field input {
+      width: 100%;
+      height: 64px;
+      padding: 0 16px;
+      border: 1px solid #b0b0b0;
+      border-radius: 6px;
+      font-size: 1.06rem;
+      font-family: var(--font);
+      color: #333;
+      background: #fff;
+      outline: none;
+      transition: border-color .15s;
+    }
+    .mob-field input::placeholder { color: #9a9a9a; }
+    .mob-field input:focus        { border-color: var(--blue); }
+    .mob-field.invalid input      { border-color: #d32f2f; }
+    .mob-field .err {
+      display: none;
+      font-size: .78rem;
+      color: #d32f2f;
+      margin-top: 5px;
+      padding-left: 3px;
+    }
+    .mob-field.invalid .err { display: block; }
+
+    /* ── Forgot password ── */
+    .mob-forgot {
+      display: block;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--blue);
+      margin: 6px 0 22px 2px;
+    }
+    .mob-forgot:hover { text-decoration: underline; }
+
+    /* ── Log In btn ── */
+    .mob-btn-login {
+      display: block;
+      width: 100%;
+      height: 58px;
+      background: #1565c0;
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      font-size: 1.06rem;
+      font-weight: 700;
+      letter-spacing: .01em;
+      transition: background .15s;
+    }
+    .mob-btn-login:hover  { background: var(--blue-hover); }
+    .mob-btn-login:active { opacity: .9; }
+
+    /* ── Divider "or" ── */
+    .mob-divider {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 26px 0 24px;
+      color: #999;
+      font-size: .9rem;
+    }
+    .mob-divider::before,
+    .mob-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #d0d0d0;
+    }
+
+    /* ── Sign Up btn (outline pill) ── */
+    .mob-btn-signup {
+      display: block;
+      width: 100%;
+      height: 58px;
+      background: #fff;
+      color: #111;
+      border: 2px solid #111;
+      border-radius: 30px;
+      font-size: 1.06rem;
+      font-weight: 700;
+      transition: background .15s;
+    }
+    .mob-btn-signup:hover  { background: #f5f5f5; }
+    .mob-btn-signup:active { opacity: .9; }
+
+    /* ── Demo notice ── */
+    .demo-notice {
+      display: none;
+      margin: 16px 0 0;
+      padding: 11px 14px;
+      background: #e3f2fd;
+      border: 1px solid #90caf9;
+      border-radius: 5px;
+      font-size: .83rem;
+      color: #0d47a1;
+      text-align: center;
+    }
+    .demo-notice.show { display: block; }
+
+    /* ── Language row ── */
+    .mob-lang {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      margin: 52px 0 0;
+      flex-wrap: wrap;
+    }
+
+    /* CSS-only US flag */
+    .flag-us {
+      width: 30px;
+      height: 20px;
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+      display: inline-block;
+      border: 1px solid #ccc;
+      flex-shrink: 0;
+    }
+    .flag-stripes {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        180deg,
+        #B22234 0%,   #B22234 7.69%,
+        #fff    7.69%, #fff   15.38%,
+        #B22234 15.38%,#B22234 23.07%,
+        #fff    23.07%,#fff   30.77%,
+        #B22234 30.77%,#B22234 38.46%,
+        #fff    38.46%,#fff   46.15%,
+        #B22234 46.15%,#B22234 53.84%,
+        #fff    53.84%,#fff   61.53%,
+        #B22234 61.53%,#B22234 69.23%,
+        #fff    69.23%,#fff   76.92%,
+        #B22234 76.92%,#B22234 84.61%,
+        #fff    84.61%,#fff   92.30%,
+        #B22234 92.30%,#B22234 100%
+      );
+    }
+    .flag-canton {
+      position: absolute;
+      top: 0; left: 0;
+      width: 42%;
+      height: 52%;
+      background: #3C3B6E;
+    }
+
+    .mob-chevron { font-size: .62rem; color: #555; }
+
+    .mob-langs {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0;
+      justify-content: center;
+    }
+    .mob-langs a {
+      font-size: .9rem;
+      color: #333;
+      padding: 0 7px;
+      text-decoration: none;
+    }
+    .mob-langs a.active { font-weight: 700; color: #111; padding-left: 0; }
+    .mob-langs a:hover { text-decoration: underline; }
+    .mob-langs .sep { color: #bbb; font-size: .85rem; }
+
+    /* ── Mobile footer ── */
+    .mob-footer {
+      padding: 30px 16px 28px;
+      text-align: center;
+    }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 4px 16px;
+    }
+    .footer-links a {
+      font-size: .8rem;
+      color: #666;
+    }
+    .footer-links a:hover { color: var(--blue); text-decoration: underline; }
+    .footer-copy {
+      margin-top: 10px;
+      font-size: .68rem;
+      color: #bbb;
+    }
+
+
+    /* ═══════════════════════════════════════
+       DESKTOP  (≥ 768px)
+    ═══════════════════════════════════════ */
+    @media (min-width: 768px) {
+
+      body {
+        background: #fff;
+        display: block;          /* reset flex */
+        min-height: 100vh;
+        position: relative;
+      }
+
+      /* Hide mobile, show desktop */
+      .mobile-main  { display: none; }
+      .mob-footer   { display: none; }
+
+      .desktop-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: calc(100vh - 52px); /* leave room for fixed footer */
+      }
+
+      /* ── Desktop brand ── */
+      .desk-brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 22px;
+      }
+      .desk-pp-icon svg { display: block; width: 30px; height: 30px; }
+      .desk-pp-word {
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -.2px;
+      }
+      .pp-dark  { color: #003087; }
+      .pp-light { color: #009cde; }
+
+      /* ── Desktop form ── */
+      .desk-form { width: 372px; }
+
+      .desk-field { margin-bottom: 0; }
+      .desk-field input {
+        width: 100%;
+        height: 44px;
+        padding: 0 12px;
+        border: 1px solid #c0c0c0;
+        border-radius: 0;
+        font-size: .93rem;
+        font-family: var(--font);
+        color: #333;
+        background: #fff;
+        outline: none;
+        transition: border-color .15s, box-shadow .15s;
+        position: relative;
+        z-index: 1;
+      }
+      /* Stack inputs: top gets top-radius, bottom gets bottom-radius */
+      .desk-field:first-child input {
+        border-radius: 4px 4px 0 0;
+        border-bottom: none;
+      }
+      .desk-field:nth-child(2) input {
+        border-radius: 0 0 4px 4px;
+      }
+      .desk-field input::placeholder { color: #9a9a9a; font-size: .93rem; }
+      .desk-field input:focus {
+        border-color: var(--blue);
+        box-shadow: 0 0 0 1px var(--blue);
+        z-index: 2;
+      }
+      .desk-field.invalid input { border-color: #d32f2f; }
+      .desk-field .err {
+        display: none;
+        font-size: .76rem;
+        color: #d32f2f;
+        margin-top: 4px;
+        padding-left: 2px;
+      }
+      .desk-field.invalid .err { display: block; }
+
+      /* ── Desktop Log In ── */
+      .desk-btn-login {
+        display: block;
+        width: 100%;
+        height: 44px;
+        margin-top: 16px;
+        background: #1976d2;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        font-size: .95rem;
+        font-weight: 700;
+        letter-spacing: .02em;
+        transition: background .15s;
+      }
+      .desk-btn-login:hover  { background: #1565c0; }
+      .desk-btn-login:active { background: #0d47a1; }
+
+      /* ── "Having trouble" ── */
+      .desk-trouble {
+        display: block;
+        text-align: center;
+        font-size: .88rem;
+        color: var(--blue);
+        margin: 12px 0 0;
+      }
+      .desk-trouble:hover { text-decoration: underline; }
+
+      /* ── Desktop divider (line only) ── */
+      .desk-divider {
+        height: 1px;
+        background: #e0e0e0;
+        margin: 18px 0;
+      }
+
+      /* ── Desktop Sign Up ── */
+      .desk-btn-signup {
+        display: block;
+        width: 100%;
+        height: 44px;
+        background: #e8eaf0;
+        color: #2d3748;
+        border: none;
+        border-radius: 4px;
+        font-size: .93rem;
+        font-weight: 700;
+        transition: background .15s;
+      }
+      .desk-btn-signup:hover  { background: #dde0ea; }
+      .desk-btn-signup:active { opacity: .9; }
+
+      /* ── Desktop demo notice ── */
+      .desk-demo {
+        display: none;
+        margin: 14px 0 0;
+        padding: 10px 14px;
+        background: #e3f2fd;
+        border: 1px solid #90caf9;
+        border-radius: 4px;
+        font-size: .82rem;
+        color: #0d47a1;
+        text-align: center;
+      }
+      .desk-demo.show { display: block; }
+
+      /* ── Desktop footer (fixed, gray strip) ── */
+      .desk-footer {
+        position: fixed;
+        bottom: 0; left: 0;
+        width: 100%;
+        height: 52px;
+        background: #eef0f4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 22px;
+      }
+      .desk-footer a {
+        font-size: .78rem;
+        color: #555;
+        text-decoration: none;
+      }
+      .desk-footer a:hover { color: var(--blue); text-decoration: underline; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════
+       MOBILE LAYOUT
+  ════════════════════════════════════════ -->
+  <div class="mobile-main">
+
+    <!-- Brand -->
+    <div class="mob-brand">
+      <div class="mob-brand-text">PayPal</div>
+    </div>
+
+    <!-- Form -->
+    <form id="mobForm" novalidate>
+
+      <div class="mob-field" id="mEmailField">
+        <input type="email" id="mEmail" placeholder="Email or mobile number"
+               autocomplete="username" aria-label="Email or mobile number" />
+        <div class="err">Please enter a valid email address.</div>
+      </div>
+
+      <div class="mob-field" id="mPassField">
+        <input type="password" id="mPass" placeholder="Password"
+               autocomplete="current-password" aria-label="Password" />
+        <div class="err">Please enter your password.</div>
+      </div>
+
+      <a href="#" class="mob-forgot">Forgot password?</a>
+
+      <button type="submit" class="mob-btn-login">Log In</button>
+
+      <div class="mob-divider">or</div>
+
+      <button type="button" class="mob-btn-signup"
+              onclick="alert('Sign-up is not part of this demo.')">Sign Up</button>
+
+      <div class="demo-notice" id="mobNotice" role="alert">
+        🎓 <strong>Training demo only.</strong> No real credentials are collected.
+      </div>
+
+    </form>
+
+    <!-- Language row -->
+    <div class="mob-lang">
+      <span class="flag-us" aria-hidden="true">
+        <span class="flag-stripes"></span>
+        <span class="flag-canton"></span>
+      </span>
+      <span class="mob-chevron">▾</span>
+      <div class="mob-langs">
+        <a href="#" class="active">English</a>
+        <span class="sep">|</span>
+        <a href="#">Français</a>
+        <span class="sep">|</span>
+        <a href="#">Español</a>
+        <span class="sep">|</span>
+        <a href="#">中文</a>
+      </div>
+    </div>
+
+  </div><!-- /mobile-main -->
+
+  <!-- Mobile footer -->
+  <footer class="mob-footer">
+    <nav class="footer-links" aria-label="Footer">
+      <a href="#">Contact Us</a>
+      <a href="#">Privacy</a>
+      <a href="#">Legal</a>
+      <a href="#">Policy Updates</a>
+      <a href="#">Worldwide</a>
+    </nav>
+    <p class="footer-copy">© 2024 PayDemo Inc. — Training purposes only. Not affiliated with PayPal.</p>
+  </footer>
+
+
+  <!-- ════════════════════════════════════════
+       DESKTOP LAYOUT
+  ════════════════════════════════════════ -->
+  <div class="desktop-wrapper">
+
+    <!-- Brand -->
+    <div class="desk-brand">
+      <div class="desk-pp-icon">
+        <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4.5 3.5h11.5c4.2 0 6.8 2.4 6 7C21.2 14.8 18 17 14.2 17H10.5L9 25.5H4L6.5 3.5z" fill="#003087"/>
+          <path d="M7.5 7.5h10.2c3.3 0 5.2 1.9 4.7 5.2C21.8 16.4 19.2 18 16.2 18H12.8L11.5 25H7L9.2 7.5z" fill="#009cde"/>
+          <path d="M10.5 11h8.3c2.4 0 3.8 1.4 3.3 4C21.6 17.8 19.5 19 17.2 19H14L13 24H9.5L11.5 11z" fill="#012169"/>
+        </svg>
+      </div>
+      <div class="desk-pp-word">
+        <span class="pp-dark">Pay</span><span class="pp-light">Pal</span>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <form id="deskForm" class="desk-form" novalidate>
+
+      <div class="desk-field" id="dEmailField">
+        <input type="email" id="dEmail" placeholder="Email"
+               autocomplete="username" aria-label="Email" />
+        <div class="err">Please enter a valid email.</div>
+      </div>
+
+      <div class="desk-field" id="dPassField">
+        <input type="password" id="dPass" placeholder="Password"
+               autocomplete="current-password" aria-label="Password" />
+        <div class="err">Please enter your password.</div>
+      </div>
+
+      <button type="submit" class="desk-btn-login">Log In</button>
+
+      <a href="#" class="desk-trouble">Having trouble logging in?</a>
+
+      <div class="desk-divider"></div>
+
+      <button type="button" class="desk-btn-signup"
+              onclick="alert('Sign-up is not part of this demo.')">Sign Up</button>
+
+      <div class="desk-demo" id="deskNotice" role="alert">
+        🎓 <strong>Training demo only.</strong> No real credentials are collected.
+      </div>
+
+    </form>
+
+  </div><!-- /desktop-wrapper -->
+
+  <!-- Desktop footer -->
+  <footer class="desk-footer" aria-label="Footer">
+    <a href="#">Contact Us</a>
+    <a href="#">Privacy</a>
+    <a href="#">Legal</a>
+    <a href="#">Policy Updates</a>
+    <a href="#">Worldwide</a>
+  </footer>
+
+
+  <script>
+    /* ── Helpers ──────────────────────────────────────── */
+    const isEmail = v =>
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || /^\+?\d{7,15}$/.test(v.replace(/\s/g,''));
+
+    function validate(input, field, fn) {
+      const ok = fn(input.value.trim());
+      field.classList.toggle('invalid', !ok);
+      return ok;
+    }
+
+    /* ── Mobile form ──────────────────────────────────── */
+    const mEmail = document.getElementById('mEmail');
+    const mPass  = document.getElementById('mPass');
+    const mEF    = document.getElementById('mEmailField');
+    const mPF    = document.getElementById('mPassField');
+    const mNote  = document.getElementById('mobNotice');
+
+    mEmail.addEventListener('input', () => validate(mEmail, mEF, v => v && isEmail(v)));
+    mPass.addEventListener('input',  () => validate(mPass,  mPF, v => v.length > 0));
+
+    document.getElementById('mobForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const eOk = validate(mEmail, mEF, v => v && isEmail(v));
+      const pOk = validate(mPass,  mPF, v => v.length > 0);
+      if (!eOk || !pOk) { (!eOk ? mEmail : mPass).focus(); return; }
+      mNote.classList.add('show');
+      setTimeout(() => mNote.classList.remove('show'), 6000);
+    });
+
+    /* ── Desktop form ─────────────────────────────────── */
+    const dEmail = document.getElementById('dEmail');
+    const dPass  = document.getElementById('dPass');
+    const dEF    = document.getElementById('dEmailField');
+    const dPF    = document.getElementById('dPassField');
+    const dNote  = document.getElementById('deskNotice');
+
+    dEmail.addEventListener('input', () => validate(dEmail, dEF, v => v && isEmail(v)));
+    dPass.addEventListener('input',  () => validate(dPass,  dPF, v => v.length > 0));
+
+    document.getElementById('deskForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const eOk = validate(dEmail, dEF, v => v && isEmail(v));
+      const pOk = validate(dPass,  dPF, v => v.length > 0);
+      if (!eOk || !pOk) { (!eOk ? dEmail : dPass).focus(); return; }
+      dNote.classList.add('show');
+      setTimeout(() => dNote.classList.remove('show'), 6000);
+    });
+  </script>
+
+</body>
+</html>
